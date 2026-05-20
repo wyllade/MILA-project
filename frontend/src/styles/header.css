@@ -1,0 +1,39 @@
+.header {
+  height: 90px;
+  background: #EFE5D6;
+  border: 1px solid #D8CFC2;
+  border-radius: 24px;
+  margin: 20px 40px;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.06);
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: 600;
+  font-family: "Playfair Display", serif;
+  letter-spacing: 2px;
+}
+
+.m { color: #C9733D; }
+.i { color: #65784D; }
+.l { color: #8C684B; }
+.a { color: #5C8D89; }
+
+.nav {
+  display: flex;
+  gap: 25px;
+}
+
+.nav a {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #3E342B;
+}
+
+.nav a.active {
+  border-bottom: 2px solid #C9733D;
+}
