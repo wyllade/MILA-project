@@ -1,15 +1,4 @@
 {
   "buildCommand": "pip install -r requirements.txt",
-  "outputDirectory": ".",
-  "framework": null,
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "https://YOUR_BACKEND_URL_HERE.vercel.app/api/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/api/$1"
-    }
-  ]
+  "framework": null
 }
