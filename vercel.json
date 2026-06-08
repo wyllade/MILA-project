@@ -1,4 +1,14 @@
 {
-  "buildCommand": "pip install -r requirements.txt",
-  "framework": null
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "api/index.py"
+    }
+  ]
 }
