@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { getCultureById } from "../services/api";
 import countries from "../data/countries";
 import "../styles/country.css";
 
@@ -17,8 +18,7 @@ export default function CountryPage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch(`/api/cultures/${name.toLowerCase()}`);
-        const data = await res.json();
+        const data = await getCultureById(name.toLowerCase());
         setCultureData(data);
       } catch (e) {
         console.error(e);
@@ -35,7 +35,7 @@ export default function CountryPage() {
     <div className="country-page">
       <div
         className="country-hero"
-        style={{ backgroundImage: `url(${countryInfo?.image || ""})` }}
+        style={{ backgroundImage: `url(${countryInfo?.image || "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1600&q=80"})` }}
       >
         <div className="country-hero-overlay">
           <button className="back-btn" onClick={() => navigate(-1)}>← Back</button>
@@ -142,8 +142,8 @@ export default function CountryPage() {
             {activeTab === "history" && (
               <div className="tab-panel fade-in">
                 <h2>History of {name}</h2>
-                {cultureData?.history?.extract ? (
-                  <p className="history-text">{cultureData.history.extract}</p>
+                {cultureData?.history?.summary ? (
+                  <p className="history-text">{cultureData.history.summary}</p>
                 ) : (
                   <p className="no-data">No history data found for {name}.</p>
                 )}
@@ -157,7 +157,7 @@ export default function CountryPage() {
                   <div className="traditions-list">
                     {cultureData.traditions.map((t, i) => (
                       <div key={i} className="tradition-card">
-                        <h3>{t.name}</h3>
+                        <h3>{t.title}</h3>
                         <p>{t.description}</p>
                       </div>
                     ))}

@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { getUsername } from "../services/api";
 import "../styles/header.css";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  const { isAuthenticated } = useAuth();
 
   return (
     <header className="header">
@@ -21,18 +23,18 @@ export default function Header() {
         <NavLink to="/food" onClick={() => setMenuOpen(false)}>Cuisine</NavLink>
         <NavLink to="/about" onClick={() => setMenuOpen(false)}>About</NavLink>
         <NavLink to="/contact" onClick={() => setMenuOpen(false)}>Contact</NavLink>
-        {token && <NavLink to="/profile" onClick={() => setMenuOpen(false)}>My Profile</NavLink>}
+        {isAuthenticated && <NavLink to="/profile" onClick={() => setMenuOpen(false)}>My Profile</NavLink>}
       </nav>
 
       <div className="header-actions">
-        {token ? (
+        {isAuthenticated ? (
           <button className="header-profile-btn" onClick={() => navigate("/profile")}>
-            <span className="header-avatar">{(localStorage.getItem("username") || "U")[0].toUpperCase()}</span>
+            <span className="header-avatar">{(getUsername() || "U")[0].toUpperCase()}</span>
           </button>
         ) : (
           <>
-            <button className="header-signin" onClick={() => navigate("/")}>Sign In</button>
-            <button className="header-cta" onClick={() => navigate("/")}>Get Started</button>
+            <button className="header-signin" onClick={() => navigate("/login")}>Sign In</button>
+            <button className="header-cta" onClick={() => navigate("/signup")}>Get Started</button>
           </>
         )}
         <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>

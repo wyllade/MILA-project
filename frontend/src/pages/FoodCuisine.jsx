@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import countries from "../data/countries";
+import { getCultures } from "../services/api";
 import "../styles/home.css";
 
 const featuredFoods = [
@@ -15,7 +15,13 @@ const featuredFoods = [
 export default function FoodCuisine() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
-  const allCountries = countries.flatMap(r => r.items);
+  const [cultures, setCultures] = useState([]);
+
+  useEffect(() => {
+    getCultures().then(setCultures).catch(console.error);
+  }, []);
+
+  const allCountries = cultures.map(c => ({ name: c.name }));
   const filtered = allCountries.filter(c => c.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
@@ -80,13 +86,13 @@ export default function FoodCuisine() {
               onClick={() => navigate(`/country/${c.name}`)}
               style={{
                 background: "#fff", borderRadius: "14px", overflow: "hidden",
-                cursor: "pointer", border: "1px solid #e8e0d5", transition: "all 0.2s"
+                cursor: "pointer", border: "1px solid #e8e0d5", transition: "all 0.2s",
+                padding: "20px 16px", textAlign: "center"
               }}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.borderColor = "#f5a623"; }}
               onMouseLeave={e => { e.currentTarget.style.transform = "none"; e.currentTarget.style.borderColor = "#e8e0d5"; }}
             >
-              <img src={c.image} alt={c.name} style={{ width: "100%", height: "100px", objectFit: "cover" }} />
-              <p style={{ padding: "10px 12px", fontWeight: 700, fontSize: "0.88rem", margin: 0 }}>{c.name}</p>
+              <p style={{ fontWeight: 700, fontSize: "0.95rem", margin: 0 }}>{c.name}</p>
             </div>
           ))}
         </div>

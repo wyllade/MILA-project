@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import countries from "../data/countries";
+import { getCultures } from "../services/api";
 import "../styles/home.css";
 
 const heroImages = [
@@ -9,14 +9,45 @@ const heroImages = [
   "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=1600&q=80",
 ];
 
+const CONTINENT_MAP = {
+  "Africa": "Africa",
+  "America": "Americas",
+  "Asia": "Asia",
+  "Europe": "Europe",
+  "Oceania": "Oceania",
+};
+
 export default function Home() {
   const [search, setSearch] = useState("");
   const [heroIdx] = useState(Math.floor(Math.random() * heroImages.length));
+  const [cultures, setCultures] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const allCountries = countries.flatMap(r => r.items);
+  useEffect(() => {
+    async function fetchCultures() {
+      try {
+        const data = await getCultures();
+        setCultures(data);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchCultures();
+  }, []);
+
+  const grouped = cultures.reduce((acc, c) => {
+    const region = CONTINENT_MAP[c.continent] || c.continent;
+    if (!acc[region]) acc[region] = [];
+    acc[region].push(c);
+    return acc;
+  }, {});
+
+  const allCultures = cultures.map(c => ({ name: c.name, id: c.id }));
   const filtered = search
-    ? allCountries.filter(c => c.name.toLowerCase().includes(search.toLowerCase()))
+    ? allCultures.filter(c => c.name.toLowerCase().includes(search.toLowerCase()))
     : null;
 
   return (
@@ -25,7 +56,7 @@ export default function Home() {
       <section className="home-hero" style={{ backgroundImage: `url(${heroImages[heroIdx]})` }}>
         <div className="home-hero-overlay">
           <div className="home-hero-content">
-            <span className="home-tag">✦ 195 Cultures · 700+ Lessons</span>
+            <span className="home-tag">✦ {cultures.length || 195} Cultures · Global Heritage</span>
             <h1 className="home-headline">
               Discover the<br />
               <em>Living Cultures</em><br />
@@ -46,60 +77,61 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SEARCH RESULTS */}
-      {filtered && (
-        <section className="search-results">
-          <div className="section-container">
-            <h2>{filtered.length} result{filtered.length !== 1 ? "s" : ""} for "{search}"</h2>
-            <div className="country-grid">
-              {filtered.map((c, i) => (
-                <CountryCard key={i} country={c} navigate={navigate} />
-              ))}
-            </div>
-          </div>
+      {loading ? (
+        <section className="region-section" style={{ padding: "60px 0", textAlign: "center", color: "#888" }}>
+          <p>Loading cultures...</p>
         </section>
-      )}
+      ) : (
+        <>
+          {/* SEARCH RESULTS */}
+          {filtered && (
+            <section className="search-results">
+              <div className="section-container">
+                <h2>{filtered.length} result{filtered.length !== 1 ? "s" : ""} for "{search}"</h2>
+                <div className="country-grid">
+                  {filtered.map((c, i) => (
+                    <CountryCard key={i} name={c.name} navigate={navigate} />
+                  ))}
+                </div>
+              </div>
+            </section>
+          )}
 
-      {/* FEATURED REGIONS */}
-      {!filtered && countries.map((region) => (
-        <section key={region.region} className="region-section">
-          <div className="section-container">
-            <div className="section-header">
-              <h2>{region.region}</h2>
-              <span className="section-count">{region.items.length} cultures</span>
-            </div>
-            <div className="country-grid">
-              {region.items.map((c, i) => (
-                <CountryCard key={i} country={c} navigate={navigate} />
-              ))}
-            </div>
-          </div>
-        </section>
-      ))}
+          {/* FEATURED REGIONS */}
+          {!filtered && Object.entries(grouped).map(([region, items]) => (
+            <section key={region} className="region-section">
+              <div className="section-container">
+                <div className="section-header">
+                  <h2>{region}</h2>
+                  <span className="section-count">{items.length} cultures</span>
+                </div>
+                <div className="country-grid">
+                  {items.map((c, i) => (
+                    <CountryCard key={i} name={c.name} navigate={navigate} />
+                  ))}
+                </div>
+              </div>
+            </section>
+          ))}
 
-      {/* STATS BANNER */}
-      {!filtered && (
-        <section className="stats-banner">
-          <div className="stat-item"><span className="stat-num">195</span><span className="stat-label">Countries</span></div>
-          <div className="stat-item"><span className="stat-num">700+</span><span className="stat-label">Lessons</span></div>
-          <div className="stat-item"><span className="stat-num">5</span><span className="stat-label">Continents</span></div>
-          <div className="stat-item"><span className="stat-num">12k+</span><span className="stat-label">Learners</span></div>
-        </section>
+          {/* STATS BANNER */}
+          {!filtered && (
+            <section className="stats-banner">
+              <div className="stat-item"><span className="stat-num">{cultures.length}</span><span className="stat-label">Countries</span></div>
+              <div className="stat-item"><span className="stat-num">5</span><span className="stat-label">Continents</span></div>
+            </section>
+          )}
+        </>
       )}
     </div>
   );
 }
 
-function CountryCard({ country, navigate }) {
+function CountryCard({ name, navigate }) {
   return (
-    <div className="c-card" onClick={() => navigate(`/country/${country.name}`)}>
-      <div className="c-card-img-wrap">
-        <img src={country.image} alt={country.name} className="c-card-img" />
-        <div className="c-card-gradient" />
-        <span className="c-card-landmark">📍 {country.landmark}</span>
-      </div>
-      <div className="c-card-body">
-        <h3 className="c-card-name">{country.name}</h3>
+    <div className="c-card" onClick={() => navigate(`/country/${name}`)}>
+      <div className="c-card-body" style={{ padding: "20px", textAlign: "center" }}>
+        <h3 className="c-card-name" style={{ margin: 0 }}>{name}</h3>
         <span className="c-card-explore">Explore →</span>
       </div>
     </div>

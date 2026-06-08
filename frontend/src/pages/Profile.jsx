@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getProfile, getProgress, getFavorites, logout, getToken } from "../services/api";
+import { useAuth } from "../context/AuthContext";
 import "../styles/profile.css";
 
 export default function Profile() {
   const navigate = useNavigate();
+  const { logout: authLogout } = useAuth();
   const [user, setUser] = useState(null);
   const [progress, setProgress] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -11,23 +14,19 @@ export default function Profile() {
   const [activeTab, setActiveTab] = useState("progress");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) { navigate("/"); return; }
+    const token = getToken();
+    if (!token) { navigate("/login"); return; }
 
     async function fetchProfile() {
-      const headers = { Authorization: `Bearer ${token}` };
       try {
-        const [uRes, pRes, fRes] = await Promise.all([
-          fetch("/api/user/profile", { headers }),
-          fetch("/api/user/progress", { headers }),
-          fetch("/api/user/favorites", { headers }),
+        const [uData, pData, fData] = await Promise.all([
+          getProfile(),
+          getProgress(),
+          getFavorites(),
         ]);
-        const uData = await uRes.json();
-        const pData = await pRes.json();
-        const fData = await fRes.json();
-        setUser(uData.user || uData);
-        setProgress(pData.progress || []);
-        setFavorites(fData.favorites || []);
+        setUser(uData);
+        setProgress(pData);
+        setFavorites(fData);
       } catch (e) {
         console.error(e);
       } finally {
@@ -38,7 +37,8 @@ export default function Profile() {
   }, [navigate]);
 
   function handleSignOut() {
-    localStorage.removeItem("token");
+    logout();
+    authLogout();
     navigate("/");
   }
 

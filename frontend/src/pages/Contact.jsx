@@ -4,14 +4,34 @@ import "../styles/contact.css";
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    setSent(true);
+    setError("");
+    setLoading(true);
+    try {
+      const res = await fetch("/api/contact/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setSent(true);
+      } else {
+        setError(data.error || "Failed to send message");
+      }
+    } catch (err) {
+      setError("Network error — please try again later");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -63,6 +83,7 @@ export default function Contact() {
           ) : (
             <form className="contact-form" onSubmit={handleSubmit}>
               <h2>Send a Message</h2>
+              {error && <div className="form-error" style={{ color: "#ff4d4d", marginBottom: "16px", fontSize: "0.9rem" }}>{error}</div>}
               <div className="form-row">
                 <div className="form-group">
                   <label>Your Name</label>
@@ -81,7 +102,7 @@ export default function Contact() {
                 <label>Message</label>
                 <textarea name="message" value={form.message} onChange={handleChange} placeholder="Tell us what's on your mind..." rows={5} required />
               </div>
-              <button type="submit" className="send-btn">Send Message →</button>
+              <button type="submit" className="send-btn" disabled={loading}>{loading ? "Sending..." : "Send Message →"}</button>
             </form>
           )}
         </div>
