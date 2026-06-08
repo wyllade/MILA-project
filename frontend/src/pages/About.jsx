@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { motion } from "framer-motion";
 import { FiGlobe, FiBookOpen, FiHeart, FiLayers, FiCode, FiLayout, FiServer, FiCheckCircle } from "react-icons/fi";
 import "../styles/about.css";
 
@@ -32,7 +33,13 @@ export default function About() {
         </div>
       </section>
 
-      <section className="about-mission">
+      <motion.section
+        className="about-mission"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4 }}
+      >
         <div className="about-container">
           <h2>Our Mission</h2>
           <p className="mission-text">
@@ -40,9 +47,15 @@ export default function About() {
             From the streets of Nairobi to the temples of Kyoto — every culture has a story worth telling.
           </p>
         </div>
-      </section>
+      </motion.section>
 
-      <section className="about-values">
+      <motion.section
+        className="about-values"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4 }}
+      >
         <div className="about-container">
           <h2>What We Stand For</h2>
           <div className="values-grid">
@@ -55,9 +68,15 @@ export default function About() {
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      <section className="about-team">
+      <motion.section
+        className="about-team"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4 }}
+      >
         <div className="about-container">
           <h2>Meet the Team</h2>
           <div className="team-grid">
@@ -73,7 +92,7 @@ export default function About() {
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
     </div>
   );
 }

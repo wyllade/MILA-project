@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { getCultures } from "../services/api";
 import { getCountryByName, flagUrl } from "../data/countries";
 import { FiSearch, FiX, FiMapPin, FiGlobe, FiStar, FiArrowRight } from "react-icons/fi";
@@ -199,8 +200,15 @@ export default function Home() {
         </section>
       ) : (
         <>
-          {!search && Object.entries(grouped).map(([region, items]) => (
-            <section key={region} className="region-section">
+          {!search && Object.entries(grouped).map(([region, items], ri) => (
+            <motion.section
+              key={region}
+              className="region-section"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.4, delay: ri * 0.08 }}
+            >
               <div className="section-container">
                 <div className="section-header">
                   <h2>
@@ -215,11 +223,17 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-            </section>
+            </motion.section>
           ))}
 
           {!search && (
-            <section className="stats-banner">
+            <motion.section
+              className="stats-banner"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+            >
               <div className="stat-item">
                 <FiGlobe size={28} style={{ color: "#f5a623" }} />
                 <span className="stat-num">{cultures.length}</span>
@@ -230,7 +244,7 @@ export default function Home() {
                 <span className="stat-num">5</span>
                 <span className="stat-label">Continents</span>
               </div>
-            </section>
+            </motion.section>
           )}
         </>
       )}

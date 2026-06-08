@@ -1,4 +1,4 @@
-.about-page { background: #faf7f2; }
+.about-page { background: var(--cream); }
 
 .about-hero {
   position: relative; min-height: 70vh; display: flex; align-items: center;
@@ -7,13 +7,13 @@
 .about-hero-bg {
   position: absolute; inset: 0;
   background: url('https://images.unsplash.com/photo-1526481280695-3c687fd5432c?auto=format&fit=crop&w=1600&q=80') center/cover;
-  opacity: 0.25;
+  opacity: 0.25; transform: scale(1.1); transition: transform 0.1s linear;
 }
 .about-hero-content {
   position: relative; z-index: 1; max-width: 700px; margin: 0 auto; padding: 80px 32px; text-align: center; color: #fff;
 }
 .about-tag {
-  display: inline-block; background: #f5a623; color: #000; font-size: 0.75rem;
+  display: inline-block; background: var(--gold); color: #000; font-size: 0.75rem;
   font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase;
   padding: 6px 16px; border-radius: 30px; margin-bottom: 24px;
 }
@@ -23,36 +23,51 @@
 .about-container { max-width: 1100px; margin: 0 auto; padding: 80px 32px; }
 .about-mission { background: #fff; }
 .about-mission h2, .about-values h2, .about-team h2 {
-  font-size: 2.2rem; font-weight: 900; margin-bottom: 24px; color: #1a1a1a;
+  font-size: 2.2rem; font-weight: 900; margin-bottom: 24px; color: var(--dark);
 }
 .mission-text { font-size: 1.15rem; line-height: 1.9; color: #555; max-width: 700px; }
 
-.about-values { background: #faf7f2; }
+.about-values { background: var(--cream); }
 .values-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; margin-top: 40px; }
 .value-card {
   background: #fff; border-radius: 20px; padding: 32px 24px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: transform 0.2s;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: transform 0.3s, box-shadow 0.3s;
+  perspective: 800px;
 }
-.value-card:hover { transform: translateY(-6px); }
-.value-icon { display: block; margin-bottom: 16px; color: #f5a623; }
-.value-card h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 10px; color: #1a1a1a; }
+.value-card:hover { transform: translateY(-6px) rotateY(2deg); box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
+.value-icon { display: block; margin-bottom: 16px; color: var(--gold); }
+.value-card h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 10px; color: var(--dark); }
 .value-card p { color: #777; line-height: 1.7; font-size: 0.95rem; }
 
 .about-team { background: #fff; }
 .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; margin-top: 40px; }
 .team-card {
-  background: #faf7f2; border-radius: 20px; padding: 32px 24px; text-align: center;
-  border: 1px solid #e8e0d5; transition: transform 0.2s;
+  background: var(--cream); border-radius: 20px; padding: 32px 24px; text-align: center;
+  border: 1px solid var(--border); transition: transform 0.3s, box-shadow 0.3s;
+  perspective: 800px;
 }
-.team-card:hover { transform: translateY(-6px); }
+.team-card:hover { transform: translateY(-6px) rotateY(-2deg); box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
 .team-avatar-wrap {
-  width: 72px; height: 72px; background: #f5a623; border-radius: 50%;
+  width: 72px; height: 72px; background: var(--gold); border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 16px; color: #000;
 }
-.team-card h3 { font-size: 1.1rem; font-weight: 800; color: #1a1a1a; margin-bottom: 6px; }
+.team-card h3 { font-size: 1.1rem; font-weight: 800; color: var(--dark); margin-bottom: 6px; }
 .team-role {
   display: inline-block; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
-  text-transform: uppercase; color: #f5a623; margin-bottom: 12px;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
 }
 .team-card p { color: #777; font-size: 0.9rem; line-height: 1.6; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .about-hero { min-height: 50vh; }
+  .values-grid { grid-template-columns: repeat(2, 1fr); }
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+  .about-container { padding: 48px 24px; }
+}
+@media (max-width: 480px) {
+  .values-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: 1fr; }
+  .about-container { padding: 32px 16px; }
+}

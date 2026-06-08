@@ -4,6 +4,7 @@
 
 :root {
   --gold: #f5a623;
+  --gold-rgb: 245, 166, 35;
   --dark: #1a1a1a;
   --cream: #faf7f2;
   --border: #e8e0d5;
@@ -22,7 +23,68 @@ a { text-decoration: none; color: inherit; }
 
 img { max-width: 100%; }
 
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #f1f1f1; }
 ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+/* === GLOBAL KEYFRAMES === */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* === FLOATING UTILITY === */
+.float { animation: float 3s ease-in-out infinite; }
+.float-delay-1 { animation-delay: 0.5s; }
+.float-delay-2 { animation-delay: 1s; }
+
+/* === 3D PERSPECTIVE UTILITY === */
+.perspective-wrap { perspective: 1000px; }
+.tilt-3d { transition: transform 0.35s cubic-bezier(.03,.98,.52,.99); transform-style: preserve-3d; }
+.tilt-3d:hover { transform: rotateY(4deg) rotateX(2deg) scale(1.02); }
+
+/* === GLASSMORPHISM UTILITY === */
+.glass {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* === SKELETON LOADING === */
+.skeleton {
+  background: linear-gradient(90deg, #e8e0d5 25%, #f5f0eb 50%, #e8e0d5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+/* === ACCESSIBILITY: REDUCED MOTION === */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

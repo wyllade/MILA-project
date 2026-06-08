@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { getProfile, getProgress, getFavorites, logout, getToken } from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import { FiUser, FiMail, FiCalendar, FiLogOut, FiGlobe, FiStar, FiHeart, FiActivity, FiCheckCircle, FiClock, FiArrowRight } from "react-icons/fi";
@@ -108,7 +109,13 @@ export default function Profile() {
         </div>
       </div>
 
-      <div className="profile-tabs-wrap">
+      <motion.div
+        className="profile-tabs-wrap"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4 }}
+      >
         <div className="profile-tabs">
           {["progress", "favorites"].map(t => (
             <button

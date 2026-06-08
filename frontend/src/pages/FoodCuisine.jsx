@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { getCultures } from "../services/api";
 import { getCountryByName, flagUrl } from "../data/countries";
 import { FiSearch, FiChevronRight } from "react-icons/fi";
@@ -38,8 +39,14 @@ export default function FoodCuisine() {
       </div>
 
       <div className="food-body">
-        <h2 className="food-section-title">Featured Dishes</h2>
-        <div className="food-featured-grid">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+        >
+          <h2 className="food-section-title">Featured Dishes</h2>
+          <div className="food-featured-grid">
           {featuredFoods.map((f, i) => (
             <div
               key={i}
@@ -54,9 +61,16 @@ export default function FoodCuisine() {
               </div>
             </div>
           ))}
-        </div>
+          </div>
+        </motion.div>
 
-        <h2 className="food-section-title">Explore by Country</h2>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+        >
+          <h2 className="food-section-title">Explore by Country</h2>
         <div className="food-search-wrap">
           <FiSearch size={18} className="food-search-icon" />
           <input
@@ -84,6 +98,7 @@ export default function FoodCuisine() {
             );
           })}
         </div>
+        </motion.div>
       </div>
     </div>
   );

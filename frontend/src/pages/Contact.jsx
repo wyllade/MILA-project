@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import "../styles/contact.css";
 
 export default function Contact() {
@@ -43,7 +44,13 @@ export default function Contact() {
         <p>Have a question, suggestion, or just want to say hello? We'd love to hear from you.</p>
       </div>
 
-      <div className="contact-body">
+      <motion.div
+        className="contact-body"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4 }}
+      >
         <div className="contact-info">
           <h2>Contact Info</h2>
           <div className="contact-item">

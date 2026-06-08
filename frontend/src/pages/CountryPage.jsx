@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { getCultureById } from "../services/api";
 import { getCountryByName, flagUrl } from "../data/countries";
 import { FiHome, FiArrowLeft, FiMapPin, FiUsers, FiGlobe, FiDollarSign, FiClock, FiStar } from "react-icons/fi";
@@ -103,7 +104,12 @@ export default function CountryPage() {
         ) : (
           <>
             {activeTab === "overview" && (
-              <div className="tab-panel fade-in">
+              <motion.div
+                className="tab-panel fade-in"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
                 <h2>About {name}</h2>
                 {cultureData?.country ? (
                   <>
@@ -168,7 +174,12 @@ export default function CountryPage() {
             )}
 
             {activeTab === "food" && (
-              <div className="tab-panel fade-in">
+              <motion.div
+                className="tab-panel fade-in"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
                 <h2>Cuisine of {name}</h2>
                 {cultureData?.food?.meals?.length > 0 ? (
                   <div className="food-grid">
@@ -188,7 +199,12 @@ export default function CountryPage() {
             )}
 
             {activeTab === "art" && (
-              <div className="tab-panel fade-in">
+              <motion.div
+                className="tab-panel fade-in"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
                 <h2>Art & Culture</h2>
                 {cultureData?.art?.data?.length > 0 ? (
                   <div className="art-grid">
@@ -207,7 +223,12 @@ export default function CountryPage() {
             )}
 
             {activeTab === "history" && (
-              <div className="tab-panel fade-in">
+              <motion.div
+                className="tab-panel fade-in"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
                 <h2>History of {name}</h2>
                 {cultureData?.history?.summary ? (
                   <p className="history-text">{cultureData.history.summary}</p>
@@ -218,7 +239,12 @@ export default function CountryPage() {
             )}
 
             {activeTab === "traditions" && (
-              <div className="tab-panel fade-in">
+              <motion.div
+                className="tab-panel fade-in"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
                 <h2>Traditions & Heritage</h2>
                 {cultureData?.traditions?.length > 0 ? (
                   <div className="traditions-list">
