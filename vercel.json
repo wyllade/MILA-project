@@ -5,7 +5,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://mila-backend.vercel.app/api/$1"
+      "destination": "https://YOUR_BACKEND_URL_HERE.vercel.app/api/$1"
     },
     {
       "source": "/(.*)",
