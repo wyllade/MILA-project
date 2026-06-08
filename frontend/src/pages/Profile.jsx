@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getProfile, getProgress, getFavorites, logout, getToken } from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import { FiUser, FiMail, FiCalendar, FiLogOut, FiGlobe, FiStar, FiHeart, FiActivity, FiCheckCircle, FiClock, FiArrowRight } from "react-icons/fi";
 import "../styles/profile.css";
 
 export default function Profile() {
@@ -12,6 +13,8 @@ export default function Profile() {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("progress");
+
+  useEffect(() => { document.title = "My Profile — MILA"; }, []);
 
   useEffect(() => {
     const token = getToken();
@@ -56,7 +59,6 @@ export default function Profile() {
 
   return (
     <div className="profile-page">
-      {/* BANNER */}
       <div className="profile-banner">
         <div className="profile-banner-bg" />
         <div className="profile-banner-content">
@@ -64,42 +66,61 @@ export default function Profile() {
             {user.username?.[0]?.toUpperCase() || "U"}
           </div>
           <div className="profile-identity">
-            <h1>{user.username}</h1>
-            <p>{user.email}</p>
+            <h1>
+              <FiUser size={20} style={{ marginRight: 8, verticalAlign: "middle", opacity: 0.6 }} />
+              {user.username}
+            </h1>
+            <p>
+              <FiMail size={14} style={{ marginRight: 6, verticalAlign: "middle", opacity: 0.5 }} />
+              {user.email}
+            </p>
             <span className="profile-joined">
+              <FiCalendar size={14} style={{ marginRight: 6, verticalAlign: "middle" }} />
               Joined {new Date(user.created_at).toLocaleDateString("en-US", { month: "long", year: "numeric" })}
             </span>
           </div>
-          <button className="signout-btn" onClick={handleSignOut}>Sign Out</button>
+          <button className="signout-btn" onClick={handleSignOut}>
+            <FiLogOut size={16} style={{ marginRight: 6, verticalAlign: "middle" }} /> Sign Out
+          </button>
         </div>
       </div>
 
-      {/* STATS */}
       <div className="profile-stats">
         <div className="pstat">
+          <FiGlobe size={22} className="pstat-icon" />
           <span className="pstat-num">{topics}</span>
           <span className="pstat-label">Cultures Explored</span>
         </div>
         <div className="pstat">
+          <FiCheckCircle size={22} className="pstat-icon" />
           <span className="pstat-num">{completed}</span>
-          <span className="pstat-label">Topics Completed</span>
+          <span className="pstat-label">Completed</span>
         </div>
         <div className="pstat">
+          <FiHeart size={22} className="pstat-icon" />
           <span className="pstat-num">{favorites.length}</span>
           <span className="pstat-label">Favourites</span>
         </div>
         <div className="pstat">
+          <FiActivity size={22} className="pstat-icon" />
           <span className="pstat-num">{progress.length}</span>
-          <span className="pstat-label">Total Activities</span>
+          <span className="pstat-label">Activities</span>
         </div>
       </div>
 
-      {/* TABS */}
       <div className="profile-tabs-wrap">
         <div className="profile-tabs">
           {["progress", "favorites"].map(t => (
-            <button key={t} className={`ptab ${activeTab === t ? "active" : ""}`} onClick={() => setActiveTab(t)}>
-              {t === "progress" ? "📊 My Progress" : "❤️ Favourites"}
+            <button
+              key={t}
+              className={`ptab ${activeTab === t ? "active" : ""}`}
+              onClick={() => setActiveTab(t)}
+            >
+              {t === "progress" ? (
+                <><FiStar size={16} style={{ marginRight: 6, verticalAlign: "middle" }} /> My Progress</>
+              ) : (
+                <><FiHeart size={16} style={{ marginRight: 6, verticalAlign: "middle" }} /> Favourites</>
+              )}
             </button>
           ))}
         </div>
@@ -109,7 +130,7 @@ export default function Profile() {
             <div className="progress-section fade-in">
               {progress.length === 0 ? (
                 <div className="empty-state">
-                  <span>🌍</span>
+                  <FiGlobe size={48} style={{ color: "#f5a623" }} />
                   <h3>No progress yet</h3>
                   <p>Start exploring cultures to track your learning journey!</p>
                   <button onClick={() => navigate("/")} className="explore-btn">Start Exploring</button>
@@ -119,11 +140,15 @@ export default function Profile() {
                   {progress.map((p, i) => (
                     <div key={i} className="progress-item" onClick={() => navigate(`/country/${p.culture_id}`)}>
                       <div className="progress-info">
-                        <h3>{p.culture_id.charAt(0).toUpperCase() + p.culture_id.slice(1)}</h3>
-                        <span className="progress-topic">{p.topic}</span>
+                        <h3>{p.culture_id.replace(/\b\w/g, c => c.toUpperCase())}</h3>
+                        <span className="progress-topic">
+                          <FiClock size={12} style={{ marginRight: 4, verticalAlign: "middle" }} />
+                          {p.topic}
+                        </span>
                       </div>
                       <span className={`progress-badge ${p.completed ? "done" : "pending"}`}>
-                        {p.completed ? "✅ Completed" : "🔄 In Progress"}
+                        {p.completed ? "Completed" : "In Progress"}
+                        <FiArrowRight size={14} style={{ marginLeft: 6, verticalAlign: "middle" }} />
                       </span>
                     </div>
                   ))}
@@ -136,7 +161,7 @@ export default function Profile() {
             <div className="favorites-section fade-in">
               {favorites.length === 0 ? (
                 <div className="empty-state">
-                  <span>❤️</span>
+                  <FiHeart size={48} style={{ color: "#f5a623" }} />
                   <h3>No favourites yet</h3>
                   <p>Explore cultures and save your favourites here!</p>
                   <button onClick={() => navigate("/")} className="explore-btn">Start Exploring</button>
@@ -145,6 +170,7 @@ export default function Profile() {
                 <div className="favorites-list">
                   {favorites.map((f, i) => (
                     <div key={i} className="favorite-item">
+                      <FiHeart size={16} className="fav-icon" />
                       <span className="fav-type">{f.favorite_type}</span>
                       <span className="fav-id">{f.external_id}</span>
                       <span className="fav-date">{new Date(f.created_at).toLocaleDateString()}</span>

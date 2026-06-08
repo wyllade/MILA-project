@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../styles/contact.css";
 
 export default function Contact() {
+  useEffect(() => { document.title = "Contact — MILA"; }, []);
+
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");

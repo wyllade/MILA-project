@@ -1,18 +1,24 @@
+import { useEffect } from "react";
+import { FiGlobe, FiBookOpen, FiHeart, FiLayers, FiCode, FiLayout, FiServer, FiCheckCircle } from "react-icons/fi";
 import "../styles/about.css";
 
+const TEAM_ICONS = [FiCode, FiLayout, FiServer, FiCheckCircle];
+
 export default function About() {
+  useEffect(() => { document.title = "About — MILA"; }, []);
+
   const team = [
-    { name: "Person 1", role: "Frontend UI/Design", emoji: "🎨", desc: "Crafts beautiful layouts and visual components." },
-    { name: "Person 2", role: "Frontend Logic", emoji: "⚙️", desc: "Handles state management and API integrations." },
-    { name: "Person 3", role: "Backend/API", emoji: "🛠️", desc: "Builds the Flask API and data services." },
-    { name: "Person 4", role: "QA + Integration", emoji: "🔗", desc: "Testing, bug fixes, and deployment." },
+    { name: "Amina W.", role: "Frontend UI/Design", icon: FiLayout, desc: "Crafts beautiful, responsive layouts and ensures every pixel has purpose." },
+    { name: "Carlos M.", role: "Frontend Logic", icon: FiCode, desc: "Handles state management, API integrations, and smooth user interactions." },
+    { name: "Priya K.", role: "Backend/API", icon: FiServer, desc: "Builds the Flask API, data services, and ensures reliable server-side performance." },
+    { name: "James O.", role: "QA + Deployment", icon: FiCheckCircle, desc: "Testing, bug squashing, and keeping deployments running smoothly." },
   ];
 
   const values = [
-    { icon: "🌍", title: "Cultural Respect", desc: "We present every culture with accuracy, depth, and dignity." },
-    { icon: "📚", title: "Education First", desc: "Learning should be engaging, not boring. We make it fun." },
-    { icon: "🤝", title: "Inclusivity", desc: "Every corner of the globe deserves to be celebrated." },
-    { icon: "✨", title: "Beautiful Design", desc: "We believe great design makes learning more memorable." },
+    { icon: FiGlobe, title: "Cultural Respect", desc: "We present every culture with accuracy, depth, and dignity." },
+    { icon: FiBookOpen, title: "Education First", desc: "Learning should be engaging, not boring. We make it fun." },
+    { icon: FiHeart, title: "Inclusivity", desc: "Every corner of the globe deserves to be celebrated." },
+    { icon: FiLayers, title: "Beautiful Design", desc: "We believe great design makes learning more memorable." },
   ];
 
   return (
@@ -42,7 +48,7 @@ export default function About() {
           <div className="values-grid">
             {values.map((v, i) => (
               <div key={i} className="value-card">
-                <span className="value-icon">{v.icon}</span>
+                <v.icon size={36} className="value-icon" />
                 <h3>{v.title}</h3>
                 <p>{v.desc}</p>
               </div>
@@ -57,7 +63,9 @@ export default function About() {
           <div className="team-grid">
             {team.map((m, i) => (
               <div key={i} className="team-card">
-                <div className="team-avatar">{m.emoji}</div>
+                <div className="team-avatar-wrap">
+                  <m.icon size={28} />
+                </div>
                 <h3>{m.name}</h3>
                 <span className="team-role">{m.role}</span>
                 <p>{m.desc}</p>

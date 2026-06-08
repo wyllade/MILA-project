@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCultures } from "../services/api";
+import { getCountryByName, flagUrl } from "../data/countries";
+import { FiSearch, FiX, FiMapPin, FiGlobe, FiStar, FiArrowRight } from "react-icons/fi";
 import "../styles/home.css";
 
 const heroImages = [
@@ -17,11 +19,19 @@ const CONTINENT_MAP = {
   "Oceania": "Oceania",
 };
 
+const CONTINENTS = ["Africa", "Asia", "Europe", "Americas", "Oceania", "Middle East", "South Asia", "Caribbean & Central America"];
+
 export default function Home() {
   const [search, setSearch] = useState("");
   const [heroIdx] = useState(Math.floor(Math.random() * heroImages.length));
   const [cultures, setCultures] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => { document.title = "MILA — World's Living Cultures"; }, []);
+  const [filterContinent, setFilterContinent] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
+  const [selectedIdx, setSelectedIdx] = useState(-1);
+  const searchRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,18 +55,53 @@ export default function Home() {
     return acc;
   }, {});
 
-  const allCultures = cultures.map(c => ({ name: c.name, id: c.id }));
-  const filtered = search
-    ? allCultures.filter(c => c.name.toLowerCase().includes(search.toLowerCase()))
+  const allCultures = cultures.map(c => ({ name: c.name, id: c.id, continent: c.continent }));
+
+  const searchResults = search
+    ? allCultures
+        .filter(c => {
+          const match = c.name.toLowerCase().includes(search.toLowerCase());
+          if (!filterContinent) return match;
+          return match && (CONTINENT_MAP[c.continent] === filterContinent || c.continent === filterContinent);
+        })
+        .slice(0, 20)
     : null;
+
+  function handleKeyDown(e) {
+    if (!searchResults || searchResults.length === 0) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setSelectedIdx(prev => Math.min(prev + 1, searchResults.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setSelectedIdx(prev => Math.max(prev - 1, 0));
+    } else if (e.key === "Enter" && selectedIdx >= 0) {
+      navigate(`/country/${searchResults[selectedIdx].name}`);
+    } else if (e.key === "Escape") {
+      setSearch("");
+      setShowFilters(false);
+    }
+  }
+
+  function clearSearch() {
+    setSearch("");
+    setFilterContinent("");
+    setSelectedIdx(-1);
+    searchRef.current?.focus();
+  }
 
   return (
     <div className="home-page">
-      {/* HERO */}
-      <section className="home-hero" style={{ backgroundImage: `url(${heroImages[heroIdx]})` }}>
+      <section
+        className="home-hero"
+        style={{ backgroundImage: `url(${heroImages[heroIdx]})` }}
+      >
         <div className="home-hero-overlay">
           <div className="home-hero-content">
-            <span className="home-tag">✦ {cultures.length || 195} Cultures · Global Heritage</span>
+            <span className="home-tag">
+              <FiGlobe size={14} style={{ marginRight: 6, verticalAlign: "middle" }} />
+              {cultures.length || 195} Cultures · Global Heritage
+            </span>
             <h1 className="home-headline">
               Discover the<br />
               <em>Living Cultures</em><br />
@@ -65,13 +110,84 @@ export default function Home() {
             <p className="home-subheadline">
               Explore traditions, history, art, food, and stories from every corner of the globe.
             </p>
-            <div className="home-search-bar">
-              <span className="search-icon">🔍</span>
-              <input
-                placeholder="Search any country..."
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-              />
+
+            <div className="home-search-wrapper">
+              <div className="home-search-bar">
+                <FiSearch size={18} className="search-icon" />
+                <input
+                  ref={searchRef}
+                  placeholder="Search any country..."
+                  value={search}
+                  onChange={e => { setSearch(e.target.value); setSelectedIdx(-1); }}
+                  onKeyDown={handleKeyDown}
+                  onFocus={() => setShowFilters(true)}
+                />
+                {search && (
+                  <button className="search-clear" onClick={clearSearch}>
+                    <FiX size={18} />
+                  </button>
+                )}
+                <button
+                  className={`search-filter-toggle ${filterContinent ? "active" : ""}`}
+                  onClick={() => setShowFilters(!showFilters)}
+                  title="Filter by continent"
+                >
+                  <FiMapPin size={16} />
+                </button>
+              </div>
+
+              {showFilters && (
+                <div className="search-filters">
+                  <button
+                    className={`filter-chip ${!filterContinent ? "active" : ""}`}
+                    onClick={() => setFilterContinent("")}
+                  >
+                    All
+                  </button>
+                  {CONTINENTS.map(cont => (
+                    <button
+                      key={cont}
+                      className={`filter-chip ${filterContinent === cont ? "active" : ""}`}
+                      onClick={() => setFilterContinent(cont)}
+                    >
+                      {cont}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {searchResults && searchResults.length > 0 && (
+                <div className="search-dropdown">
+                  {searchResults.map((c, i) => {
+                    const info = getCountryByName(c.name);
+                    return (
+                      <div
+                        key={c.id}
+                        className={`search-result-item ${i === selectedIdx ? "selected" : ""}`}
+                        onClick={() => navigate(`/country/${c.name}`)}
+                        onMouseEnter={() => setSelectedIdx(i)}
+                      >
+                        {info?.code && (
+                          <img src={flagUrl(info.code)} alt="" className="sr-flag" />
+                        )}
+                        <div className="sr-info">
+                          <span className="sr-name">{c.name}</span>
+                          <span className="sr-continent">{c.continent}</span>
+                        </div>
+                        <FiArrowRight className="sr-arrow" />
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              {searchResults && searchResults.length === 0 && (
+                <div className="search-dropdown search-empty">
+                  <FiSearch size={20} />
+                  <p>No countries found for "{search}"</p>
+                  <span>Try a different name or check spelling</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -83,26 +199,14 @@ export default function Home() {
         </section>
       ) : (
         <>
-          {/* SEARCH RESULTS */}
-          {filtered && (
-            <section className="search-results">
-              <div className="section-container">
-                <h2>{filtered.length} result{filtered.length !== 1 ? "s" : ""} for "{search}"</h2>
-                <div className="country-grid">
-                  {filtered.map((c, i) => (
-                    <CountryCard key={i} name={c.name} navigate={navigate} />
-                  ))}
-                </div>
-              </div>
-            </section>
-          )}
-
-          {/* FEATURED REGIONS */}
-          {!filtered && Object.entries(grouped).map(([region, items]) => (
+          {!search && Object.entries(grouped).map(([region, items]) => (
             <section key={region} className="region-section">
               <div className="section-container">
                 <div className="section-header">
-                  <h2>{region}</h2>
+                  <h2>
+                    <FiGlobe size={20} style={{ marginRight: 8, verticalAlign: "middle", color: "#f5a623" }} />
+                    {region}
+                  </h2>
                   <span className="section-count">{items.length} cultures</span>
                 </div>
                 <div className="country-grid">
@@ -114,11 +218,18 @@ export default function Home() {
             </section>
           ))}
 
-          {/* STATS BANNER */}
-          {!filtered && (
+          {!search && (
             <section className="stats-banner">
-              <div className="stat-item"><span className="stat-num">{cultures.length}</span><span className="stat-label">Countries</span></div>
-              <div className="stat-item"><span className="stat-num">5</span><span className="stat-label">Continents</span></div>
+              <div className="stat-item">
+                <FiGlobe size={28} style={{ color: "#f5a623" }} />
+                <span className="stat-num">{cultures.length}</span>
+                <span className="stat-label">Countries</span>
+              </div>
+              <div className="stat-item">
+                <FiStar size={28} style={{ color: "#f5a623" }} />
+                <span className="stat-num">5</span>
+                <span className="stat-label">Continents</span>
+              </div>
             </section>
           )}
         </>
@@ -128,11 +239,28 @@ export default function Home() {
 }
 
 function CountryCard({ name, navigate }) {
+  const info = getCountryByName(name);
   return (
-    <div className="c-card" onClick={() => navigate(`/country/${name}`)}>
-      <div className="c-card-body" style={{ padding: "20px", textAlign: "center" }}>
-        <h3 className="c-card-name" style={{ margin: 0 }}>{name}</h3>
-        <span className="c-card-explore">Explore →</span>
+    <div
+      className="c-card"
+      onClick={() => navigate(`/country/${name}`)}
+      style={{
+        background: info?.image
+          ? `linear-gradient(rgba(11,14,26,0.7), rgba(11,14,26,0.9)), url(${info.image}) center/cover`
+          : "#161b2e",
+      }}
+    >
+      <div className="c-card-body">
+        {info?.code && (
+          <img src={flagUrl(info.code)} alt="" className="c-card-flag" />
+        )}
+        <h3 className="c-card-name">{name}</h3>
+        {info?.landmark && (
+          <span className="c-card-landmark">
+            <FiMapPin size={12} style={{ marginRight: 4 }} />
+            {info.landmark}
+          </span>
+        )}
       </div>
     </div>
   );

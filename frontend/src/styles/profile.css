@@ -52,6 +52,7 @@
   padding: 32px 48px; border-right: 1px solid #e8e0d5;
 }
 .pstat:last-child { border-right: none; }
+.pstat-icon { color: #f5a623; margin-bottom: 4px; }
 .pstat-num { font-size: 2.5rem; font-weight: 900; color: #f5a623; font-family: 'Playfair Display', serif; }
 .pstat-label { font-size: 0.8rem; color: #999; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
 

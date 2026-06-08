@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { signup, login } from "../services/api";
 
 export default function SignUp() {
+  useEffect(() => { document.title = "Sign Up — MILA"; }, []);
+
   const navigate = useNavigate();
   const { login: authLogin } = useAuth();
   const [form, setForm] = useState({ username: "", email: "", password: "", confirm: "" });

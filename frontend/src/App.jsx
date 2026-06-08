@@ -7,6 +7,7 @@ import Contact from "./pages/Contact";
 import Profile from "./pages/Profile";
 import CountryPage from "./pages/CountryPage";
 import FoodCuisine from "./pages/FoodCuisine";
+import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 
@@ -24,6 +25,7 @@ function App() {
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </AuthProvider>
   );

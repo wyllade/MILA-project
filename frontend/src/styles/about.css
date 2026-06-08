@@ -34,7 +34,7 @@
   box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: transform 0.2s;
 }
 .value-card:hover { transform: translateY(-6px); }
-.value-icon { font-size: 2.5rem; display: block; margin-bottom: 16px; }
+.value-icon { display: block; margin-bottom: 16px; color: #f5a623; }
 .value-card h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 10px; color: #1a1a1a; }
 .value-card p { color: #777; line-height: 1.7; font-size: 0.95rem; }
 
@@ -45,10 +45,10 @@
   border: 1px solid #e8e0d5; transition: transform 0.2s;
 }
 .team-card:hover { transform: translateY(-6px); }
-.team-avatar {
+.team-avatar-wrap {
   width: 72px; height: 72px; background: #f5a623; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 2rem; margin: 0 auto 16px;
+  margin: 0 auto 16px; color: #000;
 }
 .team-card h3 { font-size: 1.1rem; font-weight: 800; color: #1a1a1a; margin-bottom: 6px; }
 .team-role {

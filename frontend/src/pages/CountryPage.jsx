@@ -1,8 +1,24 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getCultureById } from "../services/api";
-import countries from "../data/countries";
+import { getCountryByName, flagUrl } from "../data/countries";
+import { FiHome, FiArrowLeft, FiMapPin, FiUsers, FiGlobe, FiDollarSign, FiClock, FiStar } from "react-icons/fi";
 import "../styles/country.css";
+
+const HERO_FALLBACK = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1600&q=80";
+
+const FUN_FACTS = {
+  kenya: "Kenya is home to the Great Rift Valley, one of the most significant geological features on Earth.",
+  egypt: "The Great Pyramid of Giza was the tallest man-made structure in the world for over 3,800 years.",
+  japan: "Japan has over 6,800 islands and the world's oldest monarchy dating back to 660 BC.",
+  india: "India is the world's largest democracy and has 22 official languages.",
+  france: "The Eiffel Tower was built for the 1889 World's Fair and was originally intended to be temporary.",
+  brazil: "Brazil is home to the Amazon Rainforest, which produces 20% of the world's oxygen.",
+  australia: "Australia has over 10,000 beaches — you could visit a new beach every day for 27 years.",
+  nepal: "Nepal is home to Mount Everest, the world's highest peak at 8,848 meters.",
+  peru: "Peru has 90% of the world's quinoa production and over 3,000 varieties of potato.",
+  iceland: "Iceland has no army and is one of the most volcanically active countries on Earth.",
+};
 
 export default function CountryPage() {
   const { name } = useParams();
@@ -11,9 +27,10 @@ export default function CountryPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
 
-  const countryInfo = countries
-    .flatMap((r) => r.items)
-    .find((c) => c.name.toLowerCase() === name.toLowerCase());
+  const countryInfo = getCountryByName(name);
+  const flagSrc = countryInfo?.code ? flagUrl(countryInfo.code) : null;
+
+  useEffect(() => { document.title = `${name} — MILA`; }, [name]);
 
   useEffect(() => {
     async function fetchData() {
@@ -29,21 +46,33 @@ export default function CountryPage() {
     fetchData();
   }, [name]);
 
+  useEffect(() => { window.scrollTo(0, 0); }, [name]);
+
   const tabs = ["overview", "food", "art", "history", "traditions"];
 
   return (
     <div className="country-page">
       <div
         className="country-hero"
-        style={{ backgroundImage: `url(${countryInfo?.image || "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1600&q=80"})` }}
+        style={{ backgroundImage: `url(${countryInfo?.image || HERO_FALLBACK})` }}
       >
         <div className="country-hero-overlay">
-          <button className="back-btn" onClick={() => navigate(-1)}>← Back</button>
+          <button className="back-btn" onClick={() => navigate(-1)}>
+            <FiArrowLeft size={18} style={{ marginRight: 6 }} /> Back
+          </button>
           <div className="country-hero-content">
-            <h1 className="country-hero-name">{name}</h1>
-            {countryInfo?.landmark && (
-              <p className="country-hero-landmark">📍 {countryInfo.landmark}</p>
-            )}
+            <div className="country-hero-title-row">
+              {flagSrc && <img src={flagSrc} alt={name} className="country-hero-flag" />}
+              <div>
+                <h1 className="country-hero-name">{name}</h1>
+                {countryInfo?.landmark && (
+                  <p className="country-hero-landmark">
+                    <FiMapPin size={16} style={{ marginRight: 6, verticalAlign: "middle" }} />
+                    {countryInfo.landmark}
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -55,6 +84,11 @@ export default function CountryPage() {
             className={`tab-btn ${activeTab === tab ? "active" : ""}`}
             onClick={() => setActiveTab(tab)}
           >
+            {tab === "overview" && <FiHome size={14} style={{ marginRight: 6 }} />}
+            {tab === "food" && "🍽 "}
+            {tab === "art" && "🎨 "}
+            {tab === "history" && "📜 "}
+            {tab === "traditions" && "🏛 "}
             {tab.charAt(0).toUpperCase() + tab.slice(1)}
           </button>
         ))}
@@ -72,28 +106,61 @@ export default function CountryPage() {
               <div className="tab-panel fade-in">
                 <h2>About {name}</h2>
                 {cultureData?.country ? (
-                  <div className="overview-grid">
-                    <div className="overview-card">
-                      <span className="overview-icon">🌍</span>
-                      <span className="overview-label">Region</span>
-                      <span className="overview-value">{cultureData.country.region || "—"}</span>
+                  <>
+                    <div className="quick-facts-bar">
+                      {countryInfo?.capital && (
+                        <div className="quick-fact">
+                          <FiMapPin size={18} />
+                          <span className="qf-label">Capital</span>
+                          <span className="qf-value">{countryInfo.capital}</span>
+                        </div>
+                      )}
+                      <div className="quick-fact">
+                        <FiGlobe size={18} />
+                        <span className="qf-label">Region</span>
+                        <span className="qf-value">{cultureData.country.region || "—"}</span>
+                      </div>
+                      <div className="quick-fact">
+                        <FiUsers size={18} />
+                        <span className="qf-label">Population</span>
+                        <span className="qf-value">{cultureData.country.population?.toLocaleString() || "—"}</span>
+                      </div>
+                      <div className="quick-fact">
+                        <FiGlobe size={18} />
+                        <span className="qf-label">Languages</span>
+                        <span className="qf-value">{cultureData.country.languages ? Object.values(cultureData.country.languages).join(", ") : "—"}</span>
+                      </div>
+                      <div className="quick-fact">
+                        <FiDollarSign size={18} />
+                        <span className="qf-label">Currency</span>
+                        <span className="qf-value">{cultureData.country.currencies ? Object.values(cultureData.country.currencies).map(c => c.name).join(", ") : "—"}</span>
+                      </div>
+                      <div className="quick-fact">
+                        <FiClock size={18} />
+                        <span className="qf-label">Timezone</span>
+                        <span className="qf-value">{cultureData.country.timezones?.[0] || "—"}</span>
+                      </div>
                     </div>
-                    <div className="overview-card">
-                      <span className="overview-icon">👥</span>
-                      <span className="overview-label">Population</span>
-                      <span className="overview-value">{cultureData.country.population?.toLocaleString() || "—"}</span>
+
+                    <div className="fun-fact-card">
+                      <FiStar size={20} style={{ color: "#f5a623", flexShrink: 0 }} />
+                      <div>
+                        <strong>Did you know?</strong>
+                        <p>{countryInfo?.funFact || FUN_FACTS[name.toLowerCase()] || `${name} has a rich and diverse cultural heritage spanning thousands of years.`}</p>
+                      </div>
                     </div>
-                    <div className="overview-card">
-                      <span className="overview-icon">🗣️</span>
-                      <span className="overview-label">Languages</span>
-                      <span className="overview-value">{cultureData.country.languages ? Object.values(cultureData.country.languages).join(", ") : "—"}</span>
+
+                    <div className="map-link-row">
+                      <a
+                        href={`https://www.google.com/maps/search/${encodeURIComponent(name)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="map-link-btn"
+                      >
+                        <FiMapPin size={16} /> View on Google Maps
+                      </a>
                     </div>
-                    <div className="overview-card">
-                      <span className="overview-icon">💰</span>
-                      <span className="overview-label">Currency</span>
-                      <span className="overview-value">{cultureData.country.currencies ? Object.values(cultureData.country.currencies).map(c => c.name).join(", ") : "—"}</span>
-                    </div>
-                  </div>
+                  </>
                 ) : (
                   <p className="no-data">No overview data available.</p>
                 )}
