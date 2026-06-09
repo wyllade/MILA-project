@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { getCultures } from "../services/api";
-import { getCountryByName, flagUrl } from "../data/countries";
+import regionData, { getCountryByName, flagUrl } from "../data/countries";
 import { FiSearch, FiX, FiMapPin, FiGlobe, FiStar, FiArrowRight } from "react-icons/fi";
 import "../styles/home.css";
 
@@ -35,6 +35,16 @@ export default function Home() {
   const searchRef = useRef(null);
   const navigate = useNavigate();
 
+  const localCultures = regionData.flatMap(r =>
+    r.items.map(c => ({
+      name: c.name,
+      id: c.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+      continent: r.region,
+    }))
+  );
+
+  const activeCultures = cultures.length > 0 ? cultures : localCultures;
+
   useEffect(() => {
     async function fetchCultures() {
       try {
@@ -49,14 +59,14 @@ export default function Home() {
     fetchCultures();
   }, []);
 
-  const grouped = cultures.reduce((acc, c) => {
+  const grouped = activeCultures.reduce((acc, c) => {
     const region = CONTINENT_MAP[c.continent] || c.continent;
     if (!acc[region]) acc[region] = [];
     acc[region].push(c);
     return acc;
   }, {});
 
-  const allCultures = cultures.map(c => ({ name: c.name, id: c.id, continent: c.continent }));
+  const allCultures = activeCultures.map(c => ({ name: c.name, id: c.id, continent: c.continent }));
 
   const searchResults = search
     ? allCultures
@@ -101,7 +111,7 @@ export default function Home() {
           <div className="home-hero-content">
             <span className="home-tag">
               <FiGlobe size={14} style={{ marginRight: 6, verticalAlign: "middle" }} />
-              {cultures.length || 195} Cultures · Global Heritage
+              {activeCultures.length} Cultures · Global Heritage
             </span>
             <h1 className="home-headline">
               Discover the<br />
@@ -236,7 +246,7 @@ export default function Home() {
             >
               <div className="stat-item">
                 <FiGlobe size={28} className="icon-saffron" />
-                <span className="stat-num">{cultures.length}</span>
+                <span className="stat-num">{activeCultures.length}</span>
                 <span className="stat-label">Countries</span>
               </div>
               <div className="stat-item">
