@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { getCultures } from "../services/api";
 import regionData, { getCountryByName, flagUrl } from "../data/countries";
-import { FiSearch, FiX, FiMapPin, FiGlobe, FiStar, FiArrowRight } from "react-icons/fi";
+import { FiSearch, FiX, FiGlobe, FiStar, FiArrowRight } from "react-icons/fi";
 import "../styles/home.css";
 
 const heroImages = [
@@ -30,7 +30,6 @@ export default function Home() {
 
   useEffect(() => { document.title = "MILA — World's Living Cultures"; }, []);
   const [filterContinent, setFilterContinent] = useState("");
-  const [showFilters, setShowFilters] = useState(false);
   const [selectedIdx, setSelectedIdx] = useState(-1);
   const searchRef = useRef(null);
   const navigate = useNavigate();
@@ -96,7 +95,6 @@ export default function Home() {
 
   function clearSearch() {
     setSearch("");
-    setFilterContinent("");
     setSelectedIdx(-1);
     searchRef.current?.focus();
   }
@@ -138,34 +136,7 @@ export default function Home() {
                     <FiX size={18} />
                   </button>
                 )}
-                <button
-                  className={`search-filter-toggle ${filterContinent ? "active" : ""}`}
-                  onClick={() => setShowFilters(!showFilters)}
-                  title="Filter by continent"
-                >
-                  <FiMapPin size={16} />
-                </button>
               </div>
-
-              {showFilters && (
-                <div className="search-filters">
-                  <button
-                    className={`filter-chip ${!filterContinent ? "active" : ""}`}
-                    onClick={() => setFilterContinent("")}
-                  >
-                    All
-                  </button>
-                  {CONTINENTS.map(cont => (
-                    <button
-                      key={cont}
-                      className={`filter-chip ${filterContinent === cont ? "active" : ""}`}
-                      onClick={() => setFilterContinent(cont)}
-                    >
-                      {cont}
-                    </button>
-                  ))}
-                </div>
-              )}
 
               {searchResults && searchResults.length > 0 && (
                 <div className="search-dropdown">
@@ -204,13 +175,37 @@ export default function Home() {
         </div>
       </section>
 
+      {!loading && !search && (
+        <div className="continent-bar">
+          <div className="continent-filters">
+            <button
+              className={`filter-chip ${!filterContinent ? "active" : ""}`}
+              onClick={() => setFilterContinent("")}
+            >
+              All
+            </button>
+            {CONTINENTS.map(cont => (
+              <button
+                key={cont}
+                className={`filter-chip ${filterContinent === cont ? "active" : ""}`}
+                onClick={() => setFilterContinent(cont)}
+              >
+                {cont}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {loading ? (
         <section className="region-section" style={{ padding: "60px 0", textAlign: "center" }}>
           <p>Loading cultures...</p>
         </section>
       ) : (
         <>
-          {!search && Object.entries(grouped).map(([region, items], ri) => (
+          {!search && Object.entries(grouped)
+            .filter(([region]) => !filterContinent || region === filterContinent)
+            .map(([region, items], ri) => (
             <motion.section
               key={region}
               className="region-section"

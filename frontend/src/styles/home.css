@@ -95,6 +95,23 @@
 .sr-arrow { color: rgba(255,255,255,0.15); flex-shrink: 0; transition: color 0.2s; }
 .search-result-item:hover .sr-arrow { color: var(--saffron); }
 
+/* CONTINENT FILTER BAR */
+.continent-bar {
+  background: var(--ink); border-bottom: 1px solid #2a2a2a;
+  padding: 16px 32px; position: sticky; top: 0; z-index: 50;
+}
+.continent-filters {
+  max-width: 1120px; margin: 0 auto;
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.continent-filters .filter-chip {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.6); padding: 8px 20px; border-radius: 24px;
+  font-size: 0.82rem; cursor: pointer; transition: all 0.2s; font-weight: 500;
+}
+.continent-filters .filter-chip:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.continent-filters .filter-chip.active { background: rgba(var(--saffron-rgb), 0.15); border-color: var(--saffron); color: var(--saffron); }
+
 /* SECTIONS */
 .region-section { padding: 64px 0; border-bottom: 1px solid var(--border); }
 .region-section:last-of-type { border-bottom: none; }
