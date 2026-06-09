@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { getCultureById } from "../services/api";
 import { getCountryByName, flagUrl } from "../data/countries";
-import { FiHome, FiArrowLeft, FiMapPin, FiUsers, FiGlobe, FiDollarSign, FiClock, FiStar } from "react-icons/fi";
+import { FiHome, FiArrowLeft, FiMapPin, FiUsers, FiGlobe, FiDollarSign, FiClock, FiStar, FiCoffee, FiImage, FiBookOpen, FiCompass } from "react-icons/fi";
 import "../styles/country.css";
 
 const HERO_FALLBACK = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1600&q=80";
@@ -75,10 +75,10 @@ export default function CountryPage() {
             onClick={() => setActiveTab(tab)}
           >
             {tab === "overview" && <FiHome size={14} style={{ marginRight: 6 }} />}
-            {tab === "food" && "🍽 "}
-            {tab === "art" && "🎨 "}
-            {tab === "history" && "📜 "}
-            {tab === "traditions" && "🏛 "}
+            {tab === "food" && <FiCoffee size={14} style={{ marginRight: 6 }} />}
+            {tab === "art" && <FiImage size={14} style={{ marginRight: 6 }} />}
+            {tab === "history" && <FiBookOpen size={14} style={{ marginRight: 6 }} />}
+            {tab === "traditions" && <FiCompass size={14} style={{ marginRight: 6 }} />}
             {tab.charAt(0).toUpperCase() + tab.slice(1)}
           </button>
         ))}
@@ -154,6 +154,33 @@ export default function CountryPage() {
                       >
                         <FiMapPin size={16} /> View on Google Maps
                       </a>
+                    </div>
+
+                    <div className="category-previews">
+                      <div className="category-preview" onClick={() => setActiveTab("food")}>
+                        <FiCoffee size={28} />
+                        <h3>Cuisine</h3>
+                        <p>{cultureData?.food?.meals?.length > 0 ? cultureData.food.meals[0].strMeal : `Explore ${name}'s flavors`}</p>
+                        <span className="preview-link">View cuisine →</span>
+                      </div>
+                      <div className="category-preview" onClick={() => setActiveTab("art")}>
+                        <FiImage size={28} />
+                        <h3>Art & Culture</h3>
+                        <p>{cultureData?.art?.data?.length > 0 ? cultureData.art.data[0].title : `Discover ${name}'s art`}</p>
+                        <span className="preview-link">View art →</span>
+                      </div>
+                      <div className="category-preview" onClick={() => setActiveTab("history")}>
+                        <FiBookOpen size={28} />
+                        <h3>History</h3>
+                        <p>{cultureData?.history?.summary ? cultureData.history.summary.slice(0, 100) + "…" : `Read ${name}'s history`}</p>
+                        <span className="preview-link">View history →</span>
+                      </div>
+                      <div className="category-preview" onClick={() => setActiveTab("traditions")}>
+                        <FiCompass size={28} />
+                        <h3>Traditions & Heritage</h3>
+                        <p>{cultureData?.traditions?.length > 0 ? `${cultureData.traditions.length} traditions` : `Explore ${name}'s heritage`}</p>
+                        <span className="preview-link">View traditions →</span>
+                      </div>
                     </div>
                   </>
                 ) : (
