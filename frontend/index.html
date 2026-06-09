@@ -7,7 +7,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 </head>
 <body>
-<div id="root"></div>
+<div id="root">
+<noscript>JavaScript is required to view this page.</noscript>
+</div>
+<script>
+  window.__errors = [];
+  window.onerror = function(msg, url, line, col, err) {
+    window.__errors.push({msg: msg, url: url, line: line, col: col, err: err && err.toString()});
+    var el = document.getElementById('root');
+    if (el) el.innerHTML = '<div style="padding:40px;color:#e84c2b;font-family:sans-serif"><h2>JavaScript Error</h2><pre style="color:#666;white-space:pre-wrap">' + msg + '</pre></div>';
+  };
+</script>
 <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>

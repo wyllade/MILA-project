@@ -5,10 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Mila — World's Living Cultures</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <script type="module" crossorigin src="/static/assets/index-CJ1eo1mr.js"></script>
-  <link rel="stylesheet" crossorigin href="/static/assets/index-Cyd8mZNc.css">
+  <script type="module" src="/static/assets/index-CJ1eo1mr.js"></script>
+  <link rel="stylesheet" href="/static/assets/index-Cyd8mZNc.css">
 </head>
 <body>
-<div id="root"></div>
+<div id="root">
+<noscript>JavaScript is required to view this page.</noscript>
+</div>
+<script>
+  window.__errors = [];
+  window.onerror = function(msg, url, line, col, err) {
+    window.__errors.push({msg: msg, url: url, line: line, col: col, err: err && err.toString()});
+    var el = document.getElementById('root');
+    if (el) el.innerHTML = '<div style="padding:40px;color:#e84c2b;font-family:sans-serif"><h2>JavaScript Error</h2><pre style="color:#666;white-space:pre-wrap">' + msg + '</pre></div>';
+  };
+</script>
 </body>
 </html>
