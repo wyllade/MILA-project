@@ -7,4 +7,3 @@ __pycache__/
 .env
 .vercel
 .env*
-app/static/

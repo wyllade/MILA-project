@@ -1,6 +1,6 @@
 {
-  "buildCommand": "cd frontend && npm install && npm run build && cd .. && pip install -r requirements.txt",
-  "installCommand": "pip install -r requirements.txt",
+  "installCommand": "cd frontend && npm install && cd .. && pip install -r requirements.txt",
+  "buildCommand": "cd frontend && npm run build && cd ..",
   "builds": [
     {
       "src": "api/index.py",
