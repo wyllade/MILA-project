@@ -8,18 +8,7 @@ import "../styles/country.css";
 
 const HERO_FALLBACK = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1600&q=80";
 
-const FUN_FACTS = {
-  kenya: "Kenya is home to the Great Rift Valley, one of the most significant geological features on Earth.",
-  egypt: "The Great Pyramid of Giza was the tallest man-made structure in the world for over 3,800 years.",
-  japan: "Japan has over 6,800 islands and the world's oldest monarchy dating back to 660 BC.",
-  india: "India is the world's largest democracy and has 22 official languages.",
-  france: "The Eiffel Tower was built for the 1889 World's Fair and was originally intended to be temporary.",
-  brazil: "Brazil is home to the Amazon Rainforest, which produces 20% of the world's oxygen.",
-  australia: "Australia has over 10,000 beaches — you could visit a new beach every day for 27 years.",
-  nepal: "Nepal is home to Mount Everest, the world's highest peak at 8,848 meters.",
-  peru: "Peru has 90% of the world's quinoa production and over 3,000 varieties of potato.",
-  iceland: "Iceland has no army and is one of the most volcanically active countries on Earth.",
-};
+
 
 export default function CountryPage() {
   const { name } = useParams();
@@ -152,7 +141,7 @@ export default function CountryPage() {
                       <FiStar size={20} style={{ color: "#f5a623", flexShrink: 0 }} />
                       <div>
                         <strong>Did you know?</strong>
-                        <p>{countryInfo?.funFact || FUN_FACTS[name.toLowerCase()] || `${name} has a rich and diverse cultural heritage spanning thousands of years.`}</p>
+                        <p>{countryInfo?.funFact || `${name} has a rich and diverse cultural heritage spanning thousands of years.`}</p>
                       </div>
                     </div>
 
