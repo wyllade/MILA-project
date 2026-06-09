@@ -170,7 +170,7 @@ export default function CountryPage() {
                 ) : (
                   <p className="no-data">No overview data available.</p>
                 )}
-              </div>
+              </motion.div>
             )}
 
             {activeTab === "food" && (
@@ -195,7 +195,7 @@ export default function CountryPage() {
                 ) : (
                   <p className="no-data">No cuisine data found for {name}.</p>
                 )}
-              </div>
+              </motion.div>
             )}
 
             {activeTab === "art" && (
@@ -219,7 +219,7 @@ export default function CountryPage() {
                 ) : (
                   <p className="no-data">No art data found for {name}.</p>
                 )}
-              </div>
+              </motion.div>
             )}
 
             {activeTab === "history" && (
@@ -235,7 +235,7 @@ export default function CountryPage() {
                 ) : (
                   <p className="no-data">No history data found for {name}.</p>
                 )}
-              </div>
+              </motion.div>
             )}
 
             {activeTab === "traditions" && (
@@ -258,7 +258,7 @@ export default function CountryPage() {
                 ) : (
                   <p className="no-data">No traditions data found for {name}.</p>
                 )}
-              </div>
+              </motion.div>
             )}
           </>
         )}

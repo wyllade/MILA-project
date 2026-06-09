@@ -19,20 +19,20 @@ export default function Header() {
 
       <nav className={`nav ${menuOpen ? "open" : ""}`}>
         <NavLink to="/" end onClick={() => setMenuOpen(false)}>
-          <FiHome size={14} style={{ marginRight: 6, verticalAlign: "middle" }} /> Home
+          <FiHome size={14} className="icon-mr" /> Home
         </NavLink>
         <NavLink to="/food" onClick={() => setMenuOpen(false)}>
-          <FiGlobe size={14} style={{ marginRight: 6, verticalAlign: "middle" }} /> Cuisine
+          <FiGlobe size={14} className="icon-mr" /> Cuisine
         </NavLink>
         <NavLink to="/about" onClick={() => setMenuOpen(false)}>
-          <FiInfo size={14} style={{ marginRight: 6, verticalAlign: "middle" }} /> About
+          <FiInfo size={14} className="icon-mr" /> About
         </NavLink>
         <NavLink to="/contact" onClick={() => setMenuOpen(false)}>
-          <FiMail size={14} style={{ marginRight: 6, verticalAlign: "middle" }} /> Contact
+          <FiMail size={14} className="icon-mr" /> Contact
         </NavLink>
         {isAuthenticated && (
           <NavLink to="/profile" onClick={() => setMenuOpen(false)}>
-            <FiUser size={14} style={{ marginRight: 6, verticalAlign: "middle" }} /> My Profile
+            <FiUser size={14} className="icon-mr" /> My Profile
           </NavLink>
         )}
       </nav>
@@ -45,7 +45,7 @@ export default function Header() {
         ) : (
           <>
             <button className="header-signin" onClick={() => navigate("/login")}>
-              <FiLogIn size={14} style={{ marginRight: 6, verticalAlign: "middle" }} /> Sign In
+              <FiLogIn size={14} className="icon-mr" /> Sign In
             </button>
             <button className="header-cta" onClick={() => navigate("/signup")}>Get Started</button>
           </>

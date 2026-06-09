@@ -27,9 +27,9 @@
 }
 .quick-fact {
   background: rgba(255,255,255,0.04); backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px;
+  border: 1px solid rgba(255,255,255,0.08); border-radius: var(--r); padding: 16px;
   display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px;
-  color: var(--gold); transition: transform 0.25s, box-shadow 0.25s;
+  color: var(--saffron); transition: transform 0.25s, box-shadow 0.25s;
 }
 .quick-fact:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
 .quick-fact .qf-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: #888; }
@@ -37,11 +37,11 @@
 
 /* FUN FACT CARD */
 .fun-fact-card {
-  background: linear-gradient(135deg, rgba(var(--gold-rgb), 0.08), rgba(var(--gold-rgb), 0.02));
-  border: 1px solid rgba(var(--gold-rgb), 0.2); border-radius: 14px; padding: 20px 24px;
+  background: linear-gradient(135deg, rgba(var(--saffron-rgb), 0.08), rgba(var(--saffron-rgb), 0.02));
+  border: 1px solid rgba(var(--saffron-rgb), 0.2); border-radius: 14px; padding: 20px 24px;
   display: flex; gap: 16px; align-items: flex-start; margin-bottom: 24px;
 }
-.fun-fact-card strong { color: var(--gold); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.fun-fact-card strong { color: var(--saffron); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; }
 .fun-fact-card p { color: #ccc; line-height: 1.6; margin: 6px 0 0; font-size: 0.95rem; }
 
 /* MAP LINK */
@@ -57,7 +57,7 @@
 /* TABS */
 .country-tabs {
   display: flex; gap: 4px; padding: 0 32px;
-  background: var(--dark); border-bottom: 1px solid #2a2a2a; overflow-x: auto;
+  background: var(--ink); border-bottom: 1px solid #2a2a2a; overflow-x: auto;
 }
 .tab-btn {
   background: none; border: none; color: #888; padding: 16px 20px;
@@ -65,18 +65,14 @@
   transition: all 0.2s; white-space: nowrap; letter-spacing: 0.05em; text-transform: uppercase;
 }
 .tab-btn:hover { color: #fff; }
-.tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+.tab-btn.active { color: var(--saffron); border-bottom-color: var(--saffron); }
 
 /* CONTENT */
 .country-content { max-width: 1100px; margin: 0 auto; padding: 48px 32px; }
 
 .loading-state { text-align: center; padding: 80px 0; }
-.spinner {
-  width: 48px; height: 48px; border: 3px solid #333; border-top-color: var(--gold);
-  border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px;
-}
 
-.tab-panel h2 { font-size: 2rem; font-weight: 800; margin-bottom: 32px; color: #fff; }
+.tab-panel h2 { font-size: 2rem; font-weight: 800; margin-bottom: 32px; }
 .fade-in { animation: fadeIn 0.4s ease; }
 
 .food-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
@@ -89,7 +85,7 @@
 .art-card {
   background: rgba(255,255,255,0.04); backdrop-filter: blur(4px);
   border: 1px solid rgba(255,255,255,0.08); border-radius: 14px;
-  padding: 20px; border-left: 3px solid var(--gold); transition: transform 0.25s;
+  padding: 20px; border-left: 3px solid var(--saffron); transition: transform 0.25s;
 }
 .art-card:hover { transform: translateX(4px); }
 .art-title { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
@@ -101,7 +97,7 @@
 .traditions-list { display: flex; flex-direction: column; gap: 16px; }
 .tradition-card {
   background: rgba(255,255,255,0.04); backdrop-filter: blur(4px);
-  border-radius: 14px; padding: 24px; border-left: 4px solid var(--gold);
+  border-radius: 14px; padding: 24px; border-left: 4px solid var(--saffron);
   transition: transform 0.25s;
 }
 .tradition-card:hover { transform: translateX(4px); }

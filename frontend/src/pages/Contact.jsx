@@ -109,13 +109,14 @@ export default function Contact() {
               </div>
               <div className="form-group">
                 <label>Message</label>
-                <textarea name="message" value={form.message} onChange={handleChange} placeholder="Tell us what's on your mind..." rows={5} required />
+                 <textarea name="message" value={form.message} onChange={handleChange} placeholder="Tell us what's on your mind..." rows={5} required></textarea>
               </div>
               <button type="submit" className="send-btn" disabled={loading}>{loading ? "Sending..." : "Send Message →"}</button>
             </form>
           )}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
+

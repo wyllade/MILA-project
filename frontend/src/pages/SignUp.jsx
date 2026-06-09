@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { signup, login } from "../services/api";
+import "../styles/auth.css";
 
 export default function SignUp() {
   useEffect(() => { document.title = "Sign Up — MILA"; }, []);
@@ -42,106 +43,47 @@ export default function SignUp() {
     }
   }
 
-  const inputStyle = {
-    width: "100%",
-    padding: "14px 16px",
-    borderRadius: "12px",
-    border: "1px solid rgba(255,255,255,0.08)",
-    background: "rgba(255,255,255,0.04)",
-    color: "#fff",
-    fontSize: "0.95rem",
-    outline: "none",
-    boxSizing: "border-box"
-  };
-
-  const labelStyle = {
-    color: "rgba(255,255,255,0.7)",
-    fontSize: "0.82rem",
-    fontWeight: 600,
-    display: "block",
-    marginBottom: "8px"
-  };
-
   return (
-    <div style={{
-      minHeight: "100vh",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      background: "linear-gradient(135deg, #0b0e1a 0%, #1a1040 50%, #0b0e1a 100%)",
-      padding: "24px"
-    }}>
-      <div style={{
-        background: "#161b2e",
-        borderRadius: "24px",
-        padding: "48px 40px",
-        width: "100%",
-        maxWidth: "420px",
-        border: "1px solid rgba(255,255,255,0.06)"
-      }}>
-        <div style={{ textAlign: "center", marginBottom: "40px" }}>
-          <span style={{ fontSize: "2.5rem", fontWeight: 900, letterSpacing: "-0.03em" }}>
-            <span style={{ color: "#f5a623" }}>M</span>
-            <span style={{ color: "#fff" }}>I</span>
-            <span style={{ color: "#f5a623" }}>L</span>
-            <span style={{ color: "#fff" }}>A</span>
+    <div className="auth-page">
+      <div className="auth-box">
+        <div className="auth-logo">
+          <span className="auth-logo-text">
+            <span className="auth-logo-m">M</span>
+            <span className="auth-logo-i">I</span>
+            <span className="auth-logo-l">L</span>
+            <span className="auth-logo-a">A</span>
           </span>
-          <h1 style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 700, marginTop: "24px", marginBottom: "8px" }}>Join MILA</h1>
-          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem", margin: 0 }}>Create your account and start exploring</p>
+          <h1 className="auth-title">Join MILA</h1>
+          <p className="auth-subtitle">Create your account and start exploring</p>
         </div>
 
-        {error && (
-          <div style={{
-            background: "rgba(255,77,77,0.1)",
-            border: "1px solid rgba(255,77,77,0.3)",
-            color: "#ff4d4d",
-            padding: "12px 16px",
-            borderRadius: "12px",
-            fontSize: "0.88rem",
-            marginBottom: "20px",
-            textAlign: "center"
-          }}>{error}</div>
-        )}
+        {error && <div className="auth-error">{error}</div>}
 
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: "20px" }}>
-            <label style={labelStyle}>Username</label>
-            <input value={form.username} onChange={e => setForm({ ...form, username: e.target.value })} placeholder="Choose a username" required style={inputStyle} />
+          <div className="form-group">
+            <label className="form-label">Username</label>
+            <input className="form-input" value={form.username} onChange={e => setForm({ ...form, username: e.target.value })} placeholder="Choose a username" required />
           </div>
-          <div style={{ marginBottom: "20px" }}>
-            <label style={labelStyle}>Email</label>
-            <input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="your@email.com" required style={inputStyle} />
+          <div className="form-group">
+            <label className="form-label">Email</label>
+            <input className="form-input" type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="your@email.com" required />
           </div>
-          <div style={{ marginBottom: "20px" }}>
-            <label style={labelStyle}>Password</label>
-            <input type="password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} placeholder="At least 6 characters" required style={inputStyle} />
+          <div className="form-group">
+            <label className="form-label">Password</label>
+            <input className="form-input" type="password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} placeholder="At least 6 characters" required />
           </div>
-          <div style={{ marginBottom: "28px" }}>
-            <label style={labelStyle}>Confirm Password</label>
-            <input type="password" value={form.confirm} onChange={e => setForm({ ...form, confirm: e.target.value })} placeholder="Repeat your password" required style={inputStyle} />
+          <div className="form-group">
+            <label className="form-label">Confirm Password</label>
+            <input className="form-input" type="password" value={form.confirm} onChange={e => setForm({ ...form, confirm: e.target.value })} placeholder="Repeat your password" required />
           </div>
-          <button
-            type="submit"
-            disabled={loading}
-            style={{
-              width: "100%",
-              padding: "14px",
-              borderRadius: "12px",
-              border: "none",
-              background: loading ? "#555" : "#f5a623",
-              color: loading ? "#999" : "#000",
-              fontSize: "1rem",
-              fontWeight: 700,
-              cursor: loading ? "not-allowed" : "pointer"
-            }}
-          >
+          <button type="submit" className="form-btn" disabled={loading}>
             {loading ? "Creating account..." : "Create Account"}
           </button>
         </form>
 
-        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.88rem", textAlign: "center", marginTop: "28px" }}>
+        <p className="auth-footer">
           Already have an account?{" "}
-          <Link to="/login" style={{ color: "#f5a623", textDecoration: "none", fontWeight: 600 }}>Sign In</Link>
+          <Link to="/login" className="auth-link">Sign In</Link>
         </p>
       </div>
     </div>

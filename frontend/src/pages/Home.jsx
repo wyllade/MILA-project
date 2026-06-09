@@ -195,7 +195,7 @@ export default function Home() {
       </section>
 
       {loading ? (
-        <section className="region-section" style={{ padding: "60px 0", textAlign: "center", color: "#888" }}>
+        <section className="region-section" style={{ padding: "60px 0", textAlign: "center" }}>
           <p>Loading cultures...</p>
         </section>
       ) : (
@@ -212,7 +212,7 @@ export default function Home() {
               <div className="section-container">
                 <div className="section-header">
                   <h2>
-                    <FiGlobe size={20} style={{ marginRight: 8, verticalAlign: "middle", color: "#f5a623" }} />
+                    <FiGlobe size={20} className="icon-mr icon-saffron" />
                     {region}
                   </h2>
                   <span className="section-count">{items.length} cultures</span>
@@ -235,12 +235,12 @@ export default function Home() {
               transition={{ duration: 0.4 }}
             >
               <div className="stat-item">
-                <FiGlobe size={28} style={{ color: "#f5a623" }} />
+                <FiGlobe size={28} className="icon-saffron" />
                 <span className="stat-num">{cultures.length}</span>
                 <span className="stat-label">Countries</span>
               </div>
               <div className="stat-item">
-                <FiStar size={28} style={{ color: "#f5a623" }} />
+                <FiStar size={28} className="icon-saffron" />
                 <span className="stat-num">5</span>
                 <span className="stat-label">Continents</span>
               </div>

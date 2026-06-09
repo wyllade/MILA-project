@@ -124,9 +124,9 @@ export default function Profile() {
               onClick={() => setActiveTab(t)}
             >
               {t === "progress" ? (
-                <><FiStar size={16} style={{ marginRight: 6, verticalAlign: "middle" }} /> My Progress</>
+                <>                  <FiStar size={16} className="icon-mr" /> My Progress</>
               ) : (
-                <><FiHeart size={16} style={{ marginRight: 6, verticalAlign: "middle" }} /> Favourites</>
+                <><FiHeart size={16} className="icon-mr" /> Favourites</>
               )}
             </button>
           ))}
@@ -187,8 +187,8 @@ export default function Profile() {
               )}
             </div>
           )}
-        </div>
-      </div>
+          </div>
+      </motion.div>
     </div>
   );
 }
