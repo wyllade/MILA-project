@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { getCultures } from "../services/api";
 import regionData, { getCountryByName, flagUrl } from "../data/countries";
-import { FiSearch, FiX, FiGlobe, FiStar, FiArrowRight } from "react-icons/fi";
+import { FiSearch, FiX, FiMapPin, FiGlobe, FiStar, FiArrowRight } from "react-icons/fi";
 import "../styles/home.css";
 
 const heroImages = [
@@ -89,7 +89,6 @@ export default function Home() {
       navigate(`/country/${searchResults[selectedIdx].name}`);
     } else if (e.key === "Escape") {
       setSearch("");
-      setShowFilters(false);
     }
   }
 
@@ -129,7 +128,6 @@ export default function Home() {
                   value={search}
                   onChange={e => { setSearch(e.target.value); setSelectedIdx(-1); }}
                   onKeyDown={handleKeyDown}
-                  onFocus={() => setShowFilters(true)}
                 />
                 {search && (
                   <button className="search-clear" onClick={clearSearch}>
